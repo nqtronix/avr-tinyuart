@@ -21,15 +21,13 @@ int main(void)
 	// initializes IO
 	tinyuart_init();
 	
-		
-	//tinyuart_send_uint8(0xff);
-// 	TINYUART_PIN	|= (1 << TINYUART_IO_TX);
-//  _delay_us(40);
-// 	TINYUART_PIN	|= (1 << TINYUART_IO_TX);
-	 
-	//tinyuart_send_uint8(0b01010101);
+	_delay_us(40);
+	// toggle pattern test: after every bit delay the TX pin is toggled
+	tinyuart_send_uint8(0b01010101);
  	_delay_us(10);
 
+	// every character test: verify that your receiver can read all chars at the chosen baud rate
+	// cheap UART-USB converts often have an issue with 0x00
 	for (uint16_t n = 0; n<256; n++)
 	{
 		tinyuart_send_uint8((uint8_t)(255-n));
