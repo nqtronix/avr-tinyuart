@@ -15,7 +15,7 @@
 #define CYCLES_LOOP		3
 
 // min cycles per tx bit
-#define CYCLES_TX	10
+#define CYCLES_TX	9
 
 
 // the c preprocessor does not support floating point. to get a higher accuracy for divisions the
@@ -28,13 +28,13 @@
 // minimum allowed loop value is 1; value 0 is interpreted as 256
 #ifdef TINYUART_OPT_HIGH_ACCURACY
 	// round to nearest cycle
-	#define CYCLES			(((UPSCALE*TINYUART_F_CPU/TINYUART_BAUD-UPSCALE*CYCLES_TX)+UPSCALE/2)/UPSCALE)
+	#define CYCLES			(((UPSCALE*(TINYUART_F_CPU)/(TINYUART_BAUD)-UPSCALE*CYCLES_TX)+UPSCALE/2)/UPSCALE)
 	#define LOOP_DELAY		(CYCLES/CYCLES_LOOP)
 	#define CYCLES_EXTRA	(CYCLES-(LOOP_DELAY*CYCLES_LOOP))
 	
 #else
 	// round to nearest 3 cycles
-	#define LOOP_DELAY		((((UPSCALE*TINYUART_F_CPU/TINYUART_BAUD-UPSCALE*CYCLES_TX)/CYCLES_LOOP)+UPSCALE/2)/UPSCALE)
+	#define LOOP_DELAY		((((UPSCALE*(TINYUART_F_CPU)/(TINYUART_BAUD)-UPSCALE*CYCLES_TX)/CYCLES_LOOP)+UPSCALE/2)/UPSCALE)
 	#define CYCLES_EXTRA	0
 #endif
 
@@ -53,7 +53,7 @@
 
 
 // Calculate tolerance
-#define TOLERANCE_PPM				(1000000*TINYUART_BAUD*(LOOP_DELAY*CYCLES_LOOP+CYCLES_TX+CYCLES_EXTRA)/TINYUART_F_CPU-1000000)
+#define TOLERANCE_PPM				(1000000*(TINYUART_BAUD)*(LOOP_DELAY*CYCLES_LOOP+CYCLES_TX+CYCLES_EXTRA)/TINYUART_F_CPU-1000000)
 #define IS_WITHIN_RANGE(x, range)	((x < -range) || (x > range))
 
 #if   defined(TINYUART_OPT_TOLERANCE_ERR) && IS_WITHIN_RANGE(TOLERANCE_PPM, 45000)
@@ -104,7 +104,7 @@ void tinyuart_send_uint8(uint8_t data)
 	(
 			"mov	%[cnt],			%[data]		\n\t"	// use cnt as scratch pad
 		
-			"sbi	%[pin],			%[io]		\n\t"	// Setup START bit => moved for cycles bevore delay loop for accurate timing
+			"out	%[pin],			%[mask]		\n\t"	// Setup START bit => moved for cycles bevore delay loop for accurate timing
 		
 			"subi	%[cnt],			128			\n\t"	// invert MSB
 			"lsl	%[cnt]						\n\t"	// shift to a) generate pattern with XOR b) place msb in carry		
@@ -125,8 +125,8 @@ void tinyuart_send_uint8(uint8_t data)
 			"dec	__tmp_reg__					\n\t"
 			"brne	send_bit_delay				\n\t"
 
-			"sbrc	%[data],	0				\n\t"   // toggle TX if change is required
-			"sbi	%[pin],		%[io]			\n\t"
+			"sbrc	%[data],		0			\n\t"   // toggle TX if change is required
+			"out	%[pin],			%[mask]		\n\t"
 
 			"ror	%[data]						\n\t"	// rotation to access the 9th bit in carry
 			"dec	%[cnt]						\n\t"
@@ -139,7 +139,6 @@ void tinyuart_send_uint8(uint8_t data)
 		// input values; never write to any of the below
 		: [mask]	"r"(mask),							// let compiler put mask in register
 		  [loops]	"r"((uint8_t)(LOOP_DELAY+1)),		// the 0th loop iteration already decrements, +1 as compensation
-		  [io]		"I"(TINYUART_IO_TX),
 		  [pin]		"I"(_SFR_IO_ADDR(TINYUART_PIN))
 		
 		// cobblers: registers modified without compiler already knowing

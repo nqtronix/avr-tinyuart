@@ -23,8 +23,8 @@ int main(void)
 	
 	_delay_us(40);
 	// toggle pattern test: after every bit delay the TX pin is toggled
-	tinyuart_send_uint8(0b01010101);
- 	_delay_us(10);
+// 	tinyuart_send_uint8(0b01010101);
+//  	_delay_us(10);
 
 	// every character test: verify that your receiver can read all chars at the chosen baud rate
 	// cheap UART-USB converts often have an issue with 0x00
@@ -34,5 +34,9 @@ int main(void)
 		_delay_us(10);
 	}
 	
-	while(1);
+	while(1)
+	{
+		tinyuart_send_uint8(0);
+		_delay_us(1000);
+	}
 }
