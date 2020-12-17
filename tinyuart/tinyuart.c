@@ -97,47 +97,52 @@ void tinyuart_init(void)
 
 void tinyuart_send_uint8(uint8_t data)
 {
-	uint8_t cnt;			
+	uint8_t cnt;		
+	uint8_t mask = 1<<TINYUART_IO_TX;	
 	
 	asm volatile
 	(
-			"mov	%[cnt],		%[data]		\n\t"	// use cnt as scratch pad
+			"mov	%[cnt],			%[data]		\n\t"	// use cnt as scratch pad
 		
-			"cbi	%[port],	%[io]		\n\t"	// Setup START bit => moved for cycles bevore delay loop for accurate timing
+			"sbi	%[pin],			%[io]		\n\t"	// Setup START bit => moved for cycles bevore delay loop for accurate timing
 		
-			"subi	%[cnt],		128			\n\t"	// invert MSB
-			"lsl	%[cnt]					\n\t"	// shift to a) generate pattern with XOR b) place msb in carry		
-			"eor	%[data],	%[cnt]		\n\t"	// generate toggle pattern
-			"ldi	%[cnt],		9			\n\t"	// init counter: 8 bits + stop
+			"subi	%[cnt],			128			\n\t"	// invert MSB
+			"lsl	%[cnt]						\n\t"	// shift to a) generate pattern with XOR b) place msb in carry		
+			"eor	%[data],		%[cnt]		\n\t"	// generate toggle pattern
+			"ldi	%[cnt],			9			\n\t"	// init counter: 8 bits + stop
 		
 		"send_bit:"
-			"mov	r0,			%[loops]	\n\t"	// bit delay loop
+			"mov	__tmp_reg__,	%[loops]	\n\t"	// bit delay loop
 		
-			#if   CYCLES_EXTRA == 2					// insert nops for cycle-accurate delays
-			"nop							\n\t"
-			"nop							\n\t"
+			#if   CYCLES_EXTRA == 2						// insert nops for cycle-accurate delays
+			"nop								\n\t"
+			"nop								\n\t"
 			#elif CYCLES_EXTRA == 1
-			"nop							\n\t"
+			"nop								\n\t"
 			#endif
 		
 		"send_bit_delay:"
-			"dec	r0						\n\t"
-			"brne	send_bit_delay			\n\t"
+			"dec	__tmp_reg__					\n\t"
+			"brne	send_bit_delay				\n\t"
 
-			"sbrc	%[data],	0			\n\t"   // toggle TX if change is required
-			"sbi	%[pin],		%[io]		\n\t"
+			"sbrc	%[data],	0				\n\t"   // toggle TX if change is required
+			"sbi	%[pin],		%[io]			\n\t"
 
-			"ror	%[data]					\n\t"	// rotation to access the 9th bit in carry
-			"dec	%[cnt]					\n\t"
-			"brne	send_bit				\n\t"
+			"ror	%[data]						\n\t"	// rotation to access the 9th bit in carry
+			"dec	%[cnt]						\n\t"
+			"brne	send_bit					\n\t"
 		
-		:
-		: [data]	"r"(data),
-		  [loops]	"r"((uint8_t)(LOOP_DELAY+1)),	// the 0th loop iteration already decrements, +1 as compensation
-		  [cnt]		"d"(cnt),
+		// output values, can be safely written to. "+" attribute is read-write
+		: [data]	"+r"(data),							// use original value and allow overwrite
+		  [cnt]		"=&d"(cnt)							// let compiler pick temporary register
+		  
+		// input values; never write to any of the below
+		: [mask]	"r"(mask),							// let compiler put mask in register
+		  [loops]	"r"((uint8_t)(LOOP_DELAY+1)),		// the 0th loop iteration already decrements, +1 as compensation
 		  [io]		"I"(TINYUART_IO_TX),
-		  [port]	"I"(_SFR_IO_ADDR(TINYUART_PORT)),
 		  [pin]		"I"(_SFR_IO_ADDR(TINYUART_PIN))
-		:
+		
+		// cobblers: registers modified without compiler already knowing
+		: /*none*/
 	);
 }
