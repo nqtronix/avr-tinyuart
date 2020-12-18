@@ -8,7 +8,7 @@
 #define F_CPU 9600000
 
 #include <avr/io.h>
-#include "tinyuart/tinyuart.h"
+#include "tinyuart.h"
 #include "util/delay.h"
 
 

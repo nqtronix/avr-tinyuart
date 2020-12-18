@@ -165,18 +165,15 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="main.c">
+    <Compile Include="tinyuart_demo.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="tinyuart\tinyuart.c">
+    <Compile Include="tinyuart.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="tinyuart\tinyuart.h">
+    <Compile Include="tinyuart.h">
       <SubType>compile</SubType>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="tinyuart" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>
