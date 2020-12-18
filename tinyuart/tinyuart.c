@@ -46,9 +46,11 @@
 
 // convert additional delay into NOPs
 #if   CYCLES_EXTRA == 2			
-	#define _cycle_nop()		"nop\n\t nop\n\t"
+	#define cycle_nop		"nop \n\t nop \n\t"
 #elif CYCLES_EXTRA == 1
-	#define _cycle_nop()		"nop\n\t"
+	#define cycle_nop		"nop \n\t"
+#else
+	#define cycle_nop		/*empty*/
 #endif
 
 
@@ -114,12 +116,7 @@ void tinyuart_send_uint8(uint8_t data)
 		"send_bit:"
 			"mov	__tmp_reg__,	%[loops]	\n\t"	// bit delay loop
 		
-			#if   CYCLES_EXTRA == 2						// insert nops for cycle-accurate delays
-			"nop								\n\t"
-			"nop								\n\t"
-			#elif CYCLES_EXTRA == 1
-			"nop								\n\t"
-			#endif
+			cycle_nop									// insert nops for cycle-accurate delays
 		
 		"send_bit_delay:"
 			"dec	__tmp_reg__					\n\t"

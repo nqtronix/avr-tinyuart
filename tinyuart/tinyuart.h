@@ -21,7 +21,7 @@
 #define TINYUART_F_CPU				9600000
 
 // select a baud rate
-#define TINYUART_BAUD				500000
+#define TINYUART_BAUD				115200
 
 // specify pins used
 #define TINYUART_PORT				PORTB

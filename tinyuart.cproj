@@ -43,8 +43,9 @@
         </DebugFile>
       </AAFDebugFiles>
     </AAFDebugger>
-    <avrtool>com.atmel.avrdbg.tool.avrdragon</avrtool>
-    <avrtoolserialnumber>00A200050668</avrtoolserialnumber>
+    <avrtool>com.atmel.avrdbg.tool.simulator</avrtool>
+    <avrtoolserialnumber>
+    </avrtoolserialnumber>
     <avrdeviceexpectedsignature>0x1E9007</avrdeviceexpectedsignature>
     <com_atmel_avrdbg_tool_simulator>
       <ToolOptions>
@@ -70,7 +71,8 @@
         </dependencies>
       </framework-data>
     </AsfFrameworkConfig>
-    <avrtoolinterface>ISP</avrtoolinterface>
+    <avrtoolinterface>
+    </avrtoolinterface>
     <com_atmel_avrdbg_tool_avrdragon>
       <ToolOptions>
         <InterfaceProperties>
