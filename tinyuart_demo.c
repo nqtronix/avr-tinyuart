@@ -21,11 +21,7 @@ int main(void)
 {
 	// disable the default div8 prescaler
 	CLKPR = 1<<CLKPCE;
-	CLKPR = 0b0000<<CLKPS0;
-	
-	// initializes IO
-	//tinyuart_init();
-	_delay_us(10);
+	CLKPR = 0b0000<<CLKPS0;
 	// interrupts must be disabled while using the send function
 	// cli();
 
