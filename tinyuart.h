@@ -54,9 +54,6 @@
 // speed, functions marked with the "_unsafe" suffix do NOT disable/ re-enable ISR them self and the
 // user MUST do it instead.
 
-// initializes the IOs ant the interrupt
-void tinyuart_init(void);
-
 // sends a single byte of data, including zero
 void tinyuart_send_uint8(uint8_t data);
 

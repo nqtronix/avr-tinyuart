@@ -85,20 +85,17 @@
 // Functions
 //////////////////////////////////////////////////////////////////////////
 
-void tinyuart_init(void)
+void tinyuart_send_uint8(uint8_t data)
 {
-	TINYUART_PORT	|= (1 << TINYUART_IO_TX);		//	UP Transmitting line
-	TINYUART_DDR	|= (1 << TINYUART_IO_TX);		//	Port Configuration
+	TINYUART_PORT	|= (1 << TINYUART_IO_TX);
+	TINYUART_DDR	|= (1 << TINYUART_IO_TX);
 	
 	#ifdef TINYUART_OPT_DBG
 		dbg_loop_delay		= LOOP_DELAY;
 		dbg_cycles_extra	= CYCLES_EXTRA;
 		dbg_cycles			= CYCLES;
 	#endif
-}
-
-void tinyuart_send_uint8(uint8_t data)
-{
+	
 	uint8_t cnt;		
 	uint8_t mask = 1<<TINYUART_IO_TX;	
 	

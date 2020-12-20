@@ -24,7 +24,7 @@ int main(void)
 	CLKPR = 0b0000<<CLKPS0;
 	
 	// initializes IO
-	tinyuart_init();
+	//tinyuart_init();
 	_delay_us(10);
 	// interrupts must be disabled while using the send function
 	// cli();
