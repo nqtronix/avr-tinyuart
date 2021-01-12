@@ -46,13 +46,11 @@ It can be surprisingly difficult to debug the smallest MCUs of the AVR family - 
 <br>
 
 ## Usage Example
-**avr-tinyuart** is trivial to use. Just call `tinyuart_init()` to init the output and `tinyuart_send_uint8()` whenever you want so send some data.
+**avr-tinyuart** is trivial to use. Just call `tinyuart_send_uint8()` whenever you want so send some data.
 
 ```c
 int main(void)
 {
-	tinyuart_init();
-
 	// interrupts must be disbaled before calling the function
 	cli();
 	
@@ -148,8 +146,12 @@ This project uses [**Semantic Versioning 2.0.0**][semver.org]. During initial de
 
 The message of each commit contains detailed information about the changes made. The list below is a summary about all significant improvements.
 
- - **0.1.0 (latest)** <br>
-   - initial release
+ - **0.1.2 (latest)** <br>
+	- update readme
+ - **0.1.1** <br>
+	- combine `_init()` and `_send_uint8_t()` functions
+ - **0.1.0** <br>
+	- initial release
 
 <br>
 
