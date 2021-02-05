@@ -50,9 +50,8 @@
 //////////////////////////////////////////////////////////////////////////
 
 // General
-// UART requires precise timing and therefore the code must not be interrupted by ISRs. To improve
-// speed, functions marked with the "_unsafe" suffix do NOT disable/ re-enable ISR them self and the
-// user MUST do it instead.
+// The software UART requires precise timing and therefore must not be interrupted by ISRs. If your
+// application requires ISRs, you must disable them before calling any function below.
 
 // sends a single byte of data, including zero
 void tinyuart_send_uint8(uint8_t data);
