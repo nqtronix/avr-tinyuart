@@ -137,8 +137,6 @@ There is no CONTRIBUTING.md yet, sorry. Contributions will inherit the [license]
 **This project is currently classified as** <a href="https://github.com/nqtronix/git-template/blob/master/badges.md#project-status"><img src="https://img.shields.io/badge/status-maintained-green.svg" alt="status: maintained"></a><br>
 _The developers intend to keep the code in working condition by updating dependencies, fixing bugs and solving issues._
 
-As my testing needs increase I will likely add the functionality I need.
-
 <br>
 
 ### Changelog
