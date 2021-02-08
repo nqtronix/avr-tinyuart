@@ -179,8 +179,8 @@ The MIT license was chosen to give you the freedom to use this project in any wa
 [git-readme]:README.md
 [git-license]:LICENSE.md
 [git-profile]:https://github.com/nqtronix
-[git-issues]:https://github.com/nqtronix/unittrace/issues
-[git-download]:https://github.com/nqtronix/unittrace/archive/master.zip
+[git-issues]:https://github.com/nqtronix/avr-tinyuart/issues
+[git-download]:https://github.com/nqtronix/avr-tinyuart/archive/master.zip
 
 [git-repo-git-template]:https://github.com/nqtronix/git-template
 
