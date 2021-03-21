@@ -165,6 +165,9 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="tinyuart_config.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="tinyuart_demo.c">
       <SubType>compile</SubType>
     </Compile>

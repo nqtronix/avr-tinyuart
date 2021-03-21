@@ -6,6 +6,31 @@
  */ 
 
 #include "tinyuart.h"
+#include "tinyuart_config.h"
+
+
+//////////////////////////////////////////////////////////////////////////
+// Snippets
+//////////////////////////////////////////////////////////////////////////
+
+// avr-easy-io
+// 
+// Specifying IO usually requires multiple definitions, one for the bit position and for each
+// register of the IO group. With the macros below you can generate all register names from a single
+// define in the form of:
+//
+// #define LIBNAME_IO_PINNAME	B,3		// LIBNAME_IO_PINNAME refers to group B, pin 3
+
+#define _io(io)					IO_BIT(io)
+#define _io_port(io)			IO_PORT(io)
+#define _io_pin(io)				IO_PIN(io)
+#define _io_ddr(io)				IO_DDR(io)
+
+#define IO_BIT(reg, bit)		(bit)
+#define IO_PORT(reg, bit)		(PORT ## reg)
+#define IO_PIN(reg, bit)		(PIN ## reg)
+#define IO_DDR(reg, bit)		(DDR ## reg)
+
 
 //////////////////////////////////////////////////////////////////////////
 // Compatibility
@@ -60,7 +85,8 @@
 
 #if   defined(TINYUART_OPT_TOLERANCE_ERR) && IS_WITHIN_RANGE(TOLERANCE_PPM, 45000)
 	#error "Selected baud rate can not be archived within tolerance."
-#elif defined(TINYUART_OPT_TOLERANCE_MSG) && IS_WITHIN_RANGE(TOLERANCE_PPM, 20000)
+#endif
+#if defined(TINYUART_OPT_TOLERANCE_MSG) && IS_WITHIN_RANGE(TOLERANCE_PPM, 20000)
 	#pragma message "Selected baud rate is beyond recommended tolerance limits. Needs accurate receiver to work."
 #endif
 
@@ -87,8 +113,8 @@
 
 void tinyuart_send_uint8(uint8_t data)
 {
-	TINYUART_PORT	|= (1 << TINYUART_IO_TX);
-	TINYUART_DDR	|= (1 << TINYUART_IO_TX);
+	_io_port(TINYUART_IO_TX)	|= (1 << _io(TINYUART_IO_TX));
+	_io_ddr(TINYUART_IO_TX)		|= (1 << _io(TINYUART_IO_TX));
 	
 	#ifdef TINYUART_OPT_DBG
 		dbg_loop_delay		= LOOP_DELAY;
@@ -97,7 +123,7 @@ void tinyuart_send_uint8(uint8_t data)
 	#endif
 	
 	uint8_t cnt;		
-	uint8_t mask = 1<<TINYUART_IO_TX;	
+	uint8_t mask = 1<<_io(TINYUART_IO_TX);	
 	
 	asm volatile
 	(
@@ -133,7 +159,7 @@ void tinyuart_send_uint8(uint8_t data)
 		// input values; never write to any of the below
 		: [mask]	"r"(mask),							// let compiler put mask in register
 		  [loops]	"r"((uint8_t)(LOOP_DELAY+1)),		// the 0th loop iteration already decrements, +1 as compensation
-		  [pin]		"I"(_SFR_IO_ADDR(TINYUART_PIN))
+		  [pin]		"I"(_SFR_IO_ADDR(_io_ddr(TINYUART_IO_TX)))
 		
 		// cobblers: registers modified without compiler already knowing
 		: /*none*/
