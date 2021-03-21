@@ -2,7 +2,7 @@
  * tinyuart.c
  *
  * Created: 16.12.2020 16:34:11
- *  Author: Dennis (nqtronix@protonmail.com)
+ *  Author: Dennis (keybase.io/nqtronix)
  */ 
 
 #include "tinyuart.h"

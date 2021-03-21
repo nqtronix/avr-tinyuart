@@ -2,7 +2,7 @@
  * main.c
  *
  * Created: 16.12.2020 16:34:18
- *  Author: Dennis (nqtronix@protonmail.com)
+ *  Author: Dennis (keybase.io/nqtronix)
  */ 
 
 #define F_CPU 9600000
