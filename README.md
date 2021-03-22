@@ -92,7 +92,7 @@ This section is written especially for everyone who is **not familiar** with the
    Press `ALT + F7`; select your MCU under `Device` and `Change Device...` and your tool under `Tool` and pick it from the drop down menu
 
  - **Adjust settings:**<br>
-   Open `tinyuart.h` and adjust the settings as needed. By default it's configured for an ATTINY13A running at 9.6MHz and 115200 baud.
+   Copy `tinyuart_config.h` to the `/config` of your project and adjust the settings as needed. By default it's configured for an ATTINY13A running at 9.6MHz and 115200 baud.
 
  - **Compile & Program:**<br>
    Press `CTRL + ALT + F5` to compile a new version for your settings and flash it afterwards.
@@ -144,7 +144,9 @@ This project uses [**Semantic Versioning 2.0.0**][semver.org]. During initial de
 
 The message of each commit contains detailed information about the changes made. The list below is a summary about all significant improvements.
 
- - **0.1.2 (latest)** <br>
+ - **0.2.0 (latest)** <br>
+	- changed the user config, now an external file can be used
+ - **0.1.2** <br>
 	- update readme
  - **0.1.1** <br>
 	- combine `_init()` and `_send_uint8_t()` functions
