@@ -10,9 +10,20 @@
 #define TINYUART_CONFIG_H_
 
 
+// Do not change this line.
+// If a newer version is incompatible with your custom config file
+#define TINYUART_VERSION_CONFIG		0
+
+
 //////////////////////////////////////////////////////////////////////////
 // User Config
 //////////////////////////////////////////////////////////////////////////
+
+// NOTE
+// For easy updates it is recommended to not change any of the included files directly, especially
+// the config file. Instead copy it to /config/tinyuart_config.h and make any modifications there.
+// If there is no custom file, the included default will be loaded.
+
 
 // specify real frequency of the CPU. If communication is unsuccessful, you can tweak this value.
 // Beware, you CAN NOT use floating point calculations here!

@@ -5,8 +5,17 @@
  *  Author: Dennis (keybase.io/nqtronix)
  */ 
 
+
 #include "tinyuart.h"
-#include "tinyuart_config.h"
+
+#if __has_include("config/tinyuart_config.h")
+	#include "config/tinyuart_config.h"
+#else
+	#include "tinyuart_config.h"
+	#pragma message "tinyuart: build-in configuration loaded, for custom settings see note tinyuart_config.h"
+#endif
+
+
 
 
 //////////////////////////////////////////////////////////////////////////
